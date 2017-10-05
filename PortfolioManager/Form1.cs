@@ -27,10 +27,14 @@ namespace PortfolioManager
         private Excel.Application _xlApp;
         private Excel._Worksheet _mainWorksheet;
         private Excel._Worksheet _pnlSheet;
-      
+
         private string BrokerUserName;
         private string BrokerPassword;
         private string SourceID;
+        private string BrokerUserNameKey = "BrokerUserName";
+        private string BrokerPasswordKey = "BrokerPassword";
+        private string SourceIDKey = "SourceID";
+        private string FilePathKey = "FilePath";
         string path;
 
         private Dictionary<string, List<AmeritradeBrokerAPI.Option>> options;
@@ -42,7 +46,13 @@ namespace PortfolioManager
         {
             oBroker = new AmeritradeBrokerAPI(this);
             InitializeComponent();
-            info("Starting application...");            
+            info("Starting application...");
+            usrName.Text = Settings.GetProtected(BrokerUserNameKey);
+            password.Text = Settings.GetProtected(BrokerPasswordKey);
+            sourceIdTextBox.Text = Settings.GetProtected(SourceIDKey);
+            path = Settings.GetProtected(FilePathKey);
+            fileLabel.Text = path;
+
         }
 
         void ThisWorkbook_BeforeClose(ref bool Cancel)
@@ -93,6 +103,13 @@ namespace PortfolioManager
             BrokerUserName = usrName.Text;
             BrokerPassword = password.Text;
             SourceID = sourceIdTextBox.Text;
+
+
+            Settings.SetProtected(BrokerPasswordKey, BrokerPassword);
+            Settings.SetProtected(BrokerUserNameKey, BrokerUserName);
+            Settings.SetProtected(SourceIDKey, SourceID);
+            Settings.SetProtected(FilePathKey, path);
+
 
             if (GetWorkBook() == null)
             {
@@ -494,6 +511,15 @@ namespace PortfolioManager
 
         private void fileLabel_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(usrName.Text) && !string.IsNullOrEmpty(password.Text) && !string.IsNullOrEmpty(sourceIdTextBox.Text) && !string.IsNullOrEmpty(path))
+            {
+                login();
+            }
 
         }
     }
