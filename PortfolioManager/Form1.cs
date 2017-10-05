@@ -516,9 +516,15 @@ namespace PortfolioManager
 
         private void Form1_Load(object sender, EventArgs e)
         {
+           
+
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
             if (!string.IsNullOrEmpty(usrName.Text) && !string.IsNullOrEmpty(password.Text) && !string.IsNullOrEmpty(sourceIdTextBox.Text) && !string.IsNullOrEmpty(path))
             {
-                login();
+                 login();
             }
 
         }
